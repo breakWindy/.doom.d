@@ -97,6 +97,7 @@
 (setq interprogram-cut-function 'paste-to-osx)
 (setq interprogram-paste-function 'copy-from-osx)
 
+(setenv "LANG" "en_US.UTF-8")
 
 (defun pbpaste ()
   (interactive)
@@ -111,4 +112,3 @@
 (global-set-key (kbd "C-c v") 'pbpaste)
 (global-set-key (kbd "C-c x") 'pbcut)
 
- (setenv "LANG" "en_US.UTF-8")
