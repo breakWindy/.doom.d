@@ -33,7 +33,6 @@
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type t)
 
 
 ;; Here are some additional functions/macros that could help you configure Doom:
@@ -75,8 +74,16 @@
 (setq mac-command-modifier 'super)
 ;;(global-set-key (kbd "s-c") 'xref-find-definitions)
 
-(setq linum-relative-current-symbol "")
-(setq linum-relative-mode t)
+(setq linum-relative-current-symbol "$")
+;;(setq linum-relative-mode t)
+(linum-relative-global-mode t)
+;;(setq display-line-numbers-mode 'relative)
+;;(display-line-numbers-mode 'relative)
+;;(display-line-numbers-mode 0)
+
+
+;;(setq global-linum-mode t)
+;;(setq display-line-numbers-type f)
 
 
 ;;--------------- defun here --------------------------------------
