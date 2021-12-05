@@ -71,10 +71,10 @@
 
 
 ;; here is set super key for command key in macOS
-(setq mac-command-modifier 'super)
+;;(setq mac-command-modifier 'super)
 ;;(global-set-key (kbd "s-c") 'xref-find-definitions)
-
-(setq linum-relative-current-symbol "$")
+(setq linum-relative-current-symbol "")
+;;(setq linum-relative-current-symbol "$")
 ;;(setq linum-relative-mode t)
 (linum-relative-global-mode t)
 ;;(setq display-line-numbers-mode 'relative)
@@ -84,7 +84,26 @@
 
 ;;(setq global-linum-mode t)
 ;;(setq display-line-numbers-type f)
+;;
+;;--------------- here is set mysql configuration ------------
+;;(setq sql-port 22004)
+(setq sql-mysql-login-params
+'((user :default "elitel")
+        (database :default "elitel!@3$GQ")
+        (server :default "www.sjpygq.com")
+        (port :default 22004)))
 
+(add-hook 'sql-interactive-mode-hook
+          (lambda ()
+            (toggle-truncate-lines t)))
+
+(setq sql-connection-alist
+      '((irr-test (sql-product 'mysql)
+                  (sql-port 22004)
+                  (sql-server "www.sjpygq.com")
+                  (sql-user "elitel")
+                  (sql-password "elitel!@3$GQ")
+                  (sql-database "irr"))))
 
 ;;--------------- defun here --------------------------------------
 
