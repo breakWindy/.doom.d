@@ -57,3 +57,12 @@
 
 ;;(package! google-this-mode)
 (package! linum-relative)
+
+
+;; svg-lib
+(package! svg-lib)
+
+;; ---------- here is front application section ---------
+(package! vue-mode)
+;;(package! vue-htm-mode)
+(package! web-mode)

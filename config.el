@@ -85,6 +85,12 @@
 ;;(setq global-linum-mode t)
 ;;(setq display-line-numbers-type f)
 ;;
+;;
+;; ------------------ here is config org-mode ----------
+;;(package! org-roam)
+(setq org-roam-directory "~/workspace/roam")
+
+
 ;;--------------- here is set mysql configuration ------------
 ;;(setq sql-port 22004)
 (setq sql-mysql-login-params
@@ -119,7 +125,6 @@
     (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
       (process-send-string proc text)
       (process-send-eof proc))))
-
 (setq interprogram-cut-function 'paste-to-osx)
 (setq interprogram-paste-function 'copy-from-osx)
 
