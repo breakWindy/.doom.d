@@ -69,6 +69,17 @@
 (setq tags-table-list '("~/workspace/code/c/linux/TAGS"
                         "~/workspace/code/c/redis/TAGS"))
 
+(setq path-to-ctags "~/workspace/bin/tags") ;; <- your ctags path here
+(defun create-tags (dir-name)
+        "Create tags file."
+        (interactive "DDirectory: ")
+        (shell-command
+        ;; (format "%s -f TAGS -e -R %s" path-to-ctags (directory-file-name dir-name))))
+        (format "ctags -f %s/TAGS -e -R %s "  path-to-ctags dir-name)))
+
+
+
+
 
 ;; here is set super key for command key in macOS
 ;;(setq mac-command-modifier 'super)
@@ -139,7 +150,10 @@
   (pbcopy)
   (delete-region (region-beginning) (region-end)))
 
+;; ---------------- here is global-set-key ------------------
 (global-set-key (kbd "C-c c") 'pbcopy)
 (global-set-key (kbd "C-c v") 'pbpaste)
 (global-set-key (kbd "C-c x") 'pbcut)
 
+(global-set-key (kbd "C-x /") 'comment-region)
+(global-set-key (kbd "C-c /") 'uncomment-region)
