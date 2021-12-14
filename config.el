@@ -157,3 +157,11 @@
 
 (global-set-key (kbd "C-x /") 'comment-region)
 (global-set-key (kbd "C-c /") 'uncomment-region)
+
+(global-set-key (kbd "C-x ,") 'find-file-in-project)
+
+;; move
+(global-set-key (kbd "C-c <left>")  'windmove-left)
+(global-set-key (kbd "C-c <right>") 'windmove-right)
+(global-set-key (kbd "C-c <up>")    'windmove-up)
+(global-set-key (kbd "C-c <down>")  'windmove-down)

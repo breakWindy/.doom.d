@@ -66,3 +66,5 @@
 (package! vue-mode)
 ;;(package! vue-htm-mode)
 (package! web-mode)
+
+(package! exec-path-from-shell)
