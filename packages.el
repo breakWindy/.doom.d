@@ -68,3 +68,18 @@
 (package! web-mode)
 
 (package! exec-path-from-shell)
+
+(package! projectile)
+(package! flycheck)
+(package! yasnippet)
+(package! lsp-mode)
+(package! hydra)
+(package! company)
+(package! lsp-ui)
+(package! which-key)
+(package! lsp-java)
+(package! dap-mode)
+;(package! dap-java)
+(package! helm-lsp)
+(package! helm)
+(package! lsp-treemacs)

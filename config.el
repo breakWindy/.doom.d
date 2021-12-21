@@ -42,7 +42,7 @@
 ;; - `after!' for running code after a package has loaded
 ;; - `add-load-path!' for adding directories to the `load-path', relative to
 ;;   this file. Emacs searches the `load-path' when you load packages with
-;;   `require' or `use-package'.
+
 ;; - `map!' for binding new keys
 ;;
 ;; To get information about any of these functions/macros, move the cursor over
@@ -77,10 +77,6 @@
         ;; (format "%s -f TAGS -e -R %s" path-to-ctags (directory-file-name dir-name))))
         (format "ctags -f %s/TAGS -e -R %s "  path-to-ctags dir-name)))
 
-
-
-
-
 ;; here is set super key for command key in macOS
 ;;(setq mac-command-modifier 'super)
 ;;(global-set-key (kbd "s-c") 'xref-find-definitions)
@@ -101,6 +97,8 @@
 ;;(package! org-roam)
 (setq org-roam-directory "~/workspace/roam")
 
+(setq lsp-java-workspace-dir "~/workspace/elitel/")
+;;(setq debug-on-error non-nil)
 
 ;;--------------- here is set mysql configuration ------------
 ;;(setq sql-port 22004)
@@ -122,7 +120,47 @@
                   (sql-password "elitel!@3$GQ")
                   (sql-database "irr"))))
 
+;; ---------------- here is global-set-key ------------------
+(global-set-key (kbd "C-c c") 'pbcopy)
+(global-set-key (kbd "C-c v") 'pbpaste)
+(global-set-key (kbd "C-c x") 'pbcut)
+
+(global-set-key (kbd "C-x /") 'comment-region)
+(global-set-key (kbd "C-c /") 'uncomment-region)
+
+(global-set-key (kbd "C-x ,") 'find-file-in-project)
+
+;; move
+(global-set-key (kbd "C-c <left>")  'windmove-left)
+(global-set-key (kbd "C-c <right>") 'windmove-right)
+(global-set-key (kbd "C-c <up>")    'windmove-up)
+(global-set-key (kbd "C-c <down>")  'windmove-down)
+
+
 ;;--------------- defun here --------------------------------------
+;; here is function
+(defun rename-current-buffer-file ()
+  "Renames current buffer and file it is visiting."
+  (interactive)
+  (let* ((name (buffer-name))
+        (filename (buffer-file-name))
+        (basename (file-name-nondirectory filename)))
+    (if (not (and filename (file-exists-p filename)))
+        (error "Buffer '%s' is not visiting a file!" name)
+      (let ((new-name (read-file-name "New name: " (file-name-directory filename) basename nil basename)))
+        (if (get-buffer new-name)
+            (error "A buffer named '%s' already exists!" new-name)
+          (rename-file filename new-name 1)
+          (rename-buffer new-name)
+          (set-visited-file-name new-name)
+          (set-buffer-modified-p nil)
+          (message "File '%s' successfully renamed to '%s'"
+                   name (file-name-nondirectory new-name)))))))
+
+(defun eshell-new()
+  "Open a new instance of eshell."
+  (interactive)
+  (eshell 'N))
 
 ;; here is configuration copy and paste in terminal emacs
 ;; amazing here  I love this one
@@ -149,44 +187,3 @@
   (interactive)
   (pbcopy)
   (delete-region (region-beginning) (region-end)))
-
-;; ---------------- here is global-set-key ------------------
-(global-set-key (kbd "C-c c") 'pbcopy)
-(global-set-key (kbd "C-c v") 'pbpaste)
-(global-set-key (kbd "C-c x") 'pbcut)
-
-(global-set-key (kbd "C-x /") 'comment-region)
-(global-set-key (kbd "C-c /") 'uncomment-region)
-
-(global-set-key (kbd "C-x ,") 'find-file-in-project)
-
-;; move
-(global-set-key (kbd "C-c <left>")  'windmove-left)
-(global-set-key (kbd "C-c <right>") 'windmove-right)
-(global-set-key (kbd "C-c <up>")    'windmove-up)
-(global-set-key (kbd "C-c <down>")  'windmove-down)
-
-
-;; here is function
-(defun rename-current-buffer-file ()
-  "Renames current buffer and file it is visiting."
-  (interactive)
-  (let* ((name (buffer-name))
-        (filename (buffer-file-name))
-        (basename (file-name-nondirectory filename)))
-    (if (not (and filename (file-exists-p filename)))
-        (error "Buffer '%s' is not visiting a file!" name)
-      (let ((new-name (read-file-name "New name: " (file-name-directory filename) basename nil basename)))
-        (if (get-buffer new-name)
-            (error "A buffer named '%s' already exists!" new-name)
-          (rename-file filename new-name 1)
-          (rename-buffer new-name)
-          (set-visited-file-name new-name)
-          (set-buffer-modified-p nil)
-          (message "File '%s' successfully renamed to '%s'"
-                   name (file-name-nondirectory new-name)))))))
-
-(defun eshell-new()
-  "Open a new instance of eshell."
-  (interactive)
-  (eshell 'N))
