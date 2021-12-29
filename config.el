@@ -66,8 +66,8 @@
      ("https" . "127.0.0.1:1087")))
 
 ;; here is provider basic info for tags
-(setq tags-table-list '("~/workspace/code/c/linux/TAGS"
-                        "~/workspace/code/c/redis/TAGS"))
+;; (setq tags-table-list '("~/workspace/code/c/linux/TAGS"
+;;                         "~/workspace/code/c/redis/TAGS"))
 
 (setq path-to-ctags "~/workspace/bin/tags") ;; <- your ctags path here
 (defun create-tags (dir-name)
@@ -97,7 +97,9 @@
 ;;(package! org-roam)
 (setq org-roam-directory "~/workspace/roam")
 
-(setq lsp-java-workspace-dir "~/workspace/elitel/")
+;;(setq lsp-java-workspace-dir "~/workspace/elitel/product_api")
+;;(setq lsp-java-jdt-download-url  "https://download.eclipse.org/jdtls/milestones/0.57.0/jdt-language-server-0.57.0-202006172108.tar.gz")
+
 ;;(setq debug-on-error non-nil)
 
 ;;--------------- here is set mysql configuration ------------
@@ -187,3 +189,21 @@
   (interactive)
   (pbcopy)
   (delete-region (region-beginning) (region-end)))
+
+;; ---------------- here is config lsp-java-------------
+(use-package! projectile)
+(use-package! flycheck)
+(use-package! yasnippet :config (yas-global-mode))
+(use-package! lsp-mode :hook ((lsp-mode . lsp-enable-which-key-integration))
+  :config (setq lsp-completion-enable-additional-text-edit nil))
+(use-package! hydra)
+(use-package! company)
+(use-package! lsp-ui)
+(use-package! which-key :config (which-key-mode))
+(use-package! lsp-java :config (add-hook 'java-mode-hook 'lsp))
+(use-package! dap-mode :after lsp-mode :config (dap-auto-configure-mode))
+(use-package! dap-java :ensure nil)
+(use-package! helm-lsp)
+(use-package! helm
+  :config (helm-mode))
+(use-package! lsp-treemacs)
