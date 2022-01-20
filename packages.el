@@ -83,3 +83,5 @@
 (package! helm-lsp)
 (package! helm)
 (package! lsp-treemacs)
+
+(package! restclient)

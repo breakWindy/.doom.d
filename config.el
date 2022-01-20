@@ -100,6 +100,8 @@
 ;;(setq lsp-java-workspace-dir "~/workspace/elitel/product_api")
 ;;(setq lsp-java-jdt-download-url  "https://download.eclipse.org/jdtls/milestones/0.57.0/jdt-language-server-0.57.0-202006172108.tar.gz")
 
+(setq lsp-java-maven-download-sources t)
+(setq dap-ui-variable-length 200)
 ;;(setq debug-on-error non-nil)
 
 ;;--------------- here is set mysql configuration ------------
@@ -120,7 +122,19 @@
                   (sql-server "www.sjpygq.com")
                   (sql-user "elitel")
                   (sql-password "elitel!@3$GQ")
-                  (sql-database "irr"))))
+                  (sql-database "irr"))
+        (irr-produce (sql-product 'mysql)
+                  (sql-port 13306)
+                  (sql-server "www.sjpygq.com")
+                  (sql-user "elitel")
+                  (sql-password "elitel!@3$GQ")
+                  (sql-database "irr"))
+        (irr-dev (sql-product 'mysql)
+                  (sql-port 13308)
+                  (sql-server "119.61.22.194")
+                  (sql-user "elitel")
+                  (sql-password "elitel!@3$")
+                  (sql-database "irr_dev"))))
 
 ;; ---------------- here is global-set-key ------------------
 (global-set-key (kbd "C-c c") 'pbcopy)
@@ -133,12 +147,16 @@
 (global-set-key (kbd "C-x ,") 'find-file-in-project)
 
 ;; move
-(global-set-key (kbd "C-c <left>")  'windmove-left)
-(global-set-key (kbd "C-c <right>") 'windmove-right)
-(global-set-key (kbd "C-c <up>")    'windmove-up)
-(global-set-key (kbd "C-c <down>")  'windmove-down)
+(global-set-key (kbd "C-c h")  'windmove-left)
+(global-set-key (kbd "C-c l") 'windmove-right)
+(global-set-key (kbd "C-c j")  'windmove-down)
+(global-set-key (kbd "C-c k")    'windmove-up)
 
-
+(global-set-key (kbd "M-n") 'better-jumper-jump-forward)
+(global-set-key (kbd "<f8>") 'dap-hydra)
+(global-set-key (kbd "<f7>") 'treemacs)
+;;(global-set-key (kbd "C-n") 'better-jumper-jump-forward)
+;(bind-key* "C-i" 'better-jumper-jump-forward)
 ;;--------------- defun here --------------------------------------
 ;; here is function
 (defun rename-current-buffer-file ()
@@ -163,6 +181,7 @@
   "Open a new instance of eshell."
   (interactive)
   (eshell 'N))
+
 
 ;; here is configuration copy and paste in terminal emacs
 ;; amazing here  I love this one
@@ -191,6 +210,11 @@
   (delete-region (region-beginning) (region-end)))
 
 ;; ---------------- here is config lsp-java-------------
+;;
+;; current VSCode defaults
+(setq lsp-java-vmargs '("-XX:+UseParallelGC" "-XX:GCTimeRatio=4" "-XX:AdaptiveSizePolicyWeight=90" "-Dsun.zip.disableMemoryMapping=true" "-Xmx2G" "-Xms100m"))
+
+
 (use-package! projectile)
 (use-package! flycheck)
 (use-package! yasnippet :config (yas-global-mode))
@@ -207,3 +231,86 @@
 (use-package! helm
   :config (helm-mode))
 (use-package! lsp-treemacs)
+
+
+;(define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
+;(define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
+
+;(setq lsp-java-workspace-dir '~/workspace/code/projects/)
+;(setq lsp-java-workspace-cache-dir '~/workpsace/lsp/cache/)
+;;;;;;;;;;;;;;;;;;;;; ------------ here is dart mode ----------
+(setq package-selected-packages
+  '(dart-mode lsp-mode lsp-dart lsp-treemacs flycheck company
+    ;; Optional packages
+    lsp-ui company hover))
+
+(when (cl-find-if-not #'package-installed-p package-selected-packages)
+  (package-refresh-contents)
+  (mapc #'package-install package-selected-packages))
+
+(add-hook 'dart-mode-hook 'lsp)
+
+(setq gc-cons-threshold (* 100 1024 1024)
+      read-process-output-max (* 1024 1024)
+      company-minimum-prefix-length 1
+      lsp-lens-enable t
+      lsp-signature-auto-activate nil)
+
+;; add to $DOOMDIR/config.el
+(after! lsp-mode
+  (advice-remove #'lsp #'+lsp-dont-prompt-to-install-servers-maybe-a))
+
+
+(dap-register-debug-template
+  "irrigate-application"
+  (list :type "java"
+        :request "compile_attach"
+        :args ""
+        :cwd nil
+        :host "localhost"
+        :request "launch"
+        :modulePaths []
+        :classPaths nil
+        :name "irrigate-main1"
+        :projectName "irrigate-main"
+        :mainClass "com.elitel.IrrGateApplication"))
+
+;; ((nil . ((eval . (let* ((root (cdr (project-current)))
+;;                        (test-bin (concat root "test/test_bin")))
+;;                    (setq dap-debug-template-configurations ))))))
+
+
+;;; ----------- here is temporary function library for irr -------
+;; here is implement M3 convert to L and ml and show height if only surface
+
+(defvar area 0.07)
+(defun irr-func-show-L-mL (cube-volume)
+  "Show volume by convert other unit"
+  (interactive "n please input cube volume: ")
+  (let ((liter-volume (* cube-volume 1000))
+        (milliliter-volume (* cube-volume 1000 1000)))
+    (message "cube = %f m3 ;  liter = %f L;  milliliter-volume = %f mL" cube-volume liter-volume milliliter-volume)))
+
+(defun irr-func-consume-surface-height (cube-volume)
+  "Provider default convert volume into surface height default area = 0.07
+default same bath existed surface water"
+  (interactive "n please input volume (default exclude underground): ")
+  (let ((height-m (/ cube-volume area))
+        height-mm)
+
+    (setq height-mm (* height-m 1000))
+    (message "consume surface height: %f m,  %f mm" height-m height-mm)))
+
+(defun irr-func-difference-volume (volume1 volume2)
+  "Here is provider difference volume , express use "
+  (interactive "n please input first volume: \nn please input second volume: ")
+  (irr-func-show-L-mL (- volume1 volume2)))
+
+(defun irr-func-show-all-both-existed-surface (cube-volume)
+  "Provider all information for compute"
+  (interactive "n please input volume: ")
+  (let ((message-height
+         (irr-func-consume-surface-height cube-volume))
+        (message-volume
+         (irr-func-show-L-mL cube-volume)))
+    (message "height: \n%s \n\nvolume: \n%s" message-height message-volume)))
