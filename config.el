@@ -314,3 +314,30 @@ default same bath existed surface water"
         (message-volume
          (irr-func-show-L-mL cube-volume)))
     (message "height: \n%s \n\nvolume: \n%s" message-height message-volume)))
+
+(defun money-return-10%-each-year (money years)
+  "Here is compound interest 10% each year"
+  (interactive "n please input first init money \nn please save your year: ")
+  (let ((ratio 0.1)
+        (return-money money)
+        (year years))
+    (dotimes (number year)
+      (setq return-money (return-10%-one-year return-money))
+      (message "Now year: %d ,and current return-money is %f" number return-money))))
+
+(defun money-return-10%-one-year (init-money)
+  "Here is return 10% compound interest one year."
+  (interactive "n please your init-money: ")
+  (let ((return-money (+ init-money (* init-money 0.1))))
+    (message "your return will is return-money = %d" return-money)
+    return-money))
+
+(defun money-financial-freedom-by-bank (interest)
+  "Fincial freedom formula return by your principal 4.75% for year"
+  (interactive "n Please input your financial freedom money of month: ")
+  (let ((bank-ratio-each-year (/ 4.57 100))
+        bank-ratio-each-month
+        principal)
+    (setq bank-ratio-each-month (/ bank-ratio-each-year 12))
+    (setq principal (/ interest bank-ratio-each-month))
+    (message "your principal money of financial freedom is %f ￥" principal)))
