@@ -85,3 +85,4 @@
 (package! lsp-treemacs)
 
 (package! restclient)
+(package! eredis)

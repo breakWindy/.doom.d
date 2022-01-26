@@ -62,8 +62,8 @@
 
 (setq url-proxy-services
    '(("no_proxy" . "^\\(localhost\\|10\\..*\\|192\\.168\\..*\\)")
-     ("http" . "127.0.0.1:1087")
-     ("https" . "127.0.0.1:1087")))
+     ("http" . "127.0.0.1:1088")
+     ("https" . "127.0.0.1:1088")))
 
 ;; here is provider basic info for tags
 ;; (setq tags-table-list '("~/workspace/code/c/linux/TAGS"
@@ -212,8 +212,22 @@
 ;; ---------------- here is config lsp-java-------------
 ;;
 ;; current VSCode defaults
-(setq lsp-java-vmargs '("-XX:+UseParallelGC" "-XX:GCTimeRatio=4" "-XX:AdaptiveSizePolicyWeight=90" "-Dsun.zip.disableMemoryMapping=true" "-Xmx2G" "-Xms100m"))
+;;(setq lsp-java-vmargs '("-XX:+UseParallelGC" "-XX:GCTimeRatio=4" "-XX:AdaptiveSizePolicyWeight=90" "-Dsun.zip.disableMemoryMapping=true" "-Xmx2G" "-Xms100m"))
+;; (setq path-to-lombok (car (file-expand-wildcards "/nix/store/*-lombok-*/share/java/lombok.jar") ) )
+;; (setq lsp-java-vmargs
+;;       `("-noverify"
+;;         "-Xmx1G"
+;;         "-XX:+UseG1GC"
+;;         "-XX:+UseStringDeduplication"
+;;         ,(concat "-javaagent:" path-to-lombok)
+;;         ,(concat "-Xbootclasspath/a:" path-to-lombok)))
 
+(setq lsp-java-vmargs '("-noverify"
+                        "-Xmx1G"
+                        "-XX:+UseG1GC"
+                        "-XX:+UseStringDeduplication"
+                        "-javaagent:/Users/luowen/.m2/repository/org/projectlombok/lombok/1.18.22/lombok-1.18.22.jar"
+                        "-Xbootclasspath/a:/Users/luowen/.m2/repository/org/projectlombok/lombok/1.18.22/lombok-1.18.22.jar"))
 
 (use-package! projectile)
 (use-package! flycheck)
@@ -341,3 +355,8 @@ default same bath existed surface water"
     (setq bank-ratio-each-month (/ bank-ratio-each-year 12))
     (setq principal (/ interest bank-ratio-each-month))
     (message "your principal money of financial freedom is %f ￥" principal)))
+
+(defun money-financial-income-by-work (income)
+  "Financial Income from enginer work, return year income"
+  (interactive "n Please input your monthly work income: ")
+  (message "your year income form work %f " (* income 12)))
