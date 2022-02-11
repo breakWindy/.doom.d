@@ -84,5 +84,11 @@
 (package! helm)
 (package! lsp-treemacs)
 
-(package! restclient)
 (package! eredis)
+(package! restclient)
+(package! yaml-mode)
+
+;; refactor lisp code
+(package! srefactor)
+
+

@@ -65,9 +65,12 @@
      ("http" . "127.0.0.1:1088")
      ("https" . "127.0.0.1:1088")))
 
+;; set edebug-print-length
+(setq edebug-print-length 500)
 ;; here is provider basic info for tags
 ;; (setq tags-table-list '("~/workspace/code/c/linux/TAGS"
 ;;                         "~/workspace/code/c/redis/TAGS"))
+(require 'srefactor-lisp)
 
 (setq path-to-ctags "~/workspace/bin/tags") ;; <- your ctags path here
 (defun create-tags (dir-name)
@@ -88,7 +91,6 @@
 ;;(display-line-numbers-mode 'relative)
 ;;(display-line-numbers-mode 0)
 
-
 ;;(setq global-linum-mode t)
 ;;(setq display-line-numbers-type f)
 ;;
@@ -103,6 +105,7 @@
 (setq lsp-java-maven-download-sources t)
 (setq dap-ui-variable-length 200)
 ;;(setq debug-on-error non-nil)
+;;
 
 ;;--------------- here is set mysql configuration ------------
 ;;(setq sql-port 22004)
