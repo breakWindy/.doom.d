@@ -120,19 +120,25 @@
             (toggle-truncate-lines t)))
 
 (setq sql-connection-alist
-      '((irr-test (sql-product 'mysql)
+      '((irr-dev-22004 (sql-product 'mysql)
                   (sql-port 22004)
                   (sql-server "www.sjpygq.com")
                   (sql-user "elitel")
                   (sql-password "elitel!@3$GQ")
-                  (sql-database "irr"))
+                  (sql-database "irr_dev"))
+        (irr-test-22004 (sql-product 'mysql)
+                  (sql-port 22004)
+                  (sql-server "www.sjpygq.com")
+                  (sql-user "elitel")
+                  (sql-password "elitel!@3$GQ")
+                  (sql-database "irr")) ;; irr use test , irr-dev , dev use and , local use irr-dev , online backup online irr
         (irr-produce (sql-product 'mysql)
                   (sql-port 13306)
                   (sql-server "www.sjpygq.com")
                   (sql-user "elitel")
                   (sql-password "elitel!@3$GQ")
                   (sql-database "irr"))
-        (irr-dev (sql-product 'mysql)
+        (irr-dev-elitel-company (sql-product 'mysql)
                   (sql-port 13308)
                   (sql-server "119.61.22.194")
                   (sql-user "elitel")
@@ -363,3 +369,9 @@ default same bath existed surface water"
   "Financial Income from enginer work, return year income"
   (interactive "n Please input your monthly work income: ")
   (message "your year income form work %f " (* income 12)))
+
+;; here I want to implement insert sql command
+(defun insert-java-debug-command ()
+  "Insert java startup command with debugger mode"
+  (interactive)
+  (insert "java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=1044 -jar irrigate-main/target/irrigate-main-0.0.1-SNAPSHOT.jar"))
