@@ -91,4 +91,4 @@
 ;; refactor lisp code
 (package! srefactor)
 
-
+(package! log4j-mode)
