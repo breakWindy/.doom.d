@@ -99,6 +99,10 @@
 ;;(setq global-linum-mode t)
 ;;(setq display-line-numbers-type f)
 ;;
+(setq eww-search-prefix "https://cn.bing.com/search?q=")
+
+(setq smerge-command-prefix "C-c v")
+
 ;;
 ;; ------------------ here is config org-mode ----------
 ;;(package! org-roam)
@@ -108,7 +112,7 @@
 ;;(setq lsp-java-jdt-download-url  "https://download.eclipse.org/jdtls/milestones/0.57.0/jdt-language-server-0.57.0-202006172108.tar.gz")
 
 (setq lsp-java-maven-download-sources t)
-(setq dap-ui-variable-length 200)
+(setq dap-ui-variable-length 500)
 ;;(setq debug-on-error non-nil)
 ;;
 
@@ -177,11 +181,75 @@
                   (sql-password "luowen123")
                   (sql-database "well_electric"))
 
+        (local-base_frame (sql-product 'mysql)
+                  (sql-port 3306)
+                  (sql-server "localhost")
+                  (sql-user "luowen")
+                  (sql-password "luowen123")
+                  (sql-database "base_frame"))
+
+        (local-general_data_platform (sql-product 'mysql)
+                  (sql-port 3306)
+                  (sql-server "localhost")
+                  (sql-user "luowen")
+                  (sql-password "luowen123")
+                  (sql-database "general_data_platform"))
+
+        (company-well-electric (sql-product 'mysql)
+                  (sql-port 3306)
+                  (sql-server "192.168.0.154")
+                  (sql-user "root")
+                  (sql-password "root")
+                  (sql-database "well_electric"))
+
+
+        (company-well-electric-14000 (sql-product 'mysql)
+                  (sql-port 3306)
+                  (sql-server "192.168.0.154")
+                  (sql-user "root")
+                  (sql-password "root")
+                  (sql-database "well_electric_14000"))
+
+        (online-sync-db (sql-product 'mysql)
+                  (sql-port 12005)
+                  (sql-server "116.178.217.201")
+                  (sql-user "elitel")
+                  (sql-password "Elitel!@3$")
+                  (sql-database "syncdb"))
+
+        (online-well-electric-Test (sql-product 'mysql)
+                  (sql-port 12005)
+                  (sql-server "116.178.217.201")
+                  (sql-user "elitel")
+                  (sql-password "Elitel!@3$")
+                  (sql-database "well_electric"))
+
+
+        (online-well-electric-14000 (sql-product 'mysql)
+                  (sql-port 12005)
+                  (sql-server "116.178.217.201")
+                  (sql-user "elitel")
+                  (sql-password "Elitel!@3$")
+                  (sql-database "well_electric_14000"))
+
         ))
 
 ;; ---------------- here is global-set-key ------------------
 (global-set-key (kbd "C-c c") 'pbcopy)
-(global-set-key (kbd "C-c v") 'pbpaste)
+;;(global-set-key (kbd "C-c v") 'pbpaste)
+;;(global-set-key (kbd "C-c v") 'pbpaste)
+(global-set-key (kbd "C-c v n") 'smerge-next)
+(global-set-key (kbd "C-c v p") 'smerge-prev)
+(global-set-key (kbd "C-c v RET") 'smerge-keep-current)
+(global-set-key (kbd "C-c v m") 'smerge-keep-mine)
+(global-set-key (kbd "C-c v o") 'smerge-keep-other)
+(global-set-key (kbd "C-c v E") 'smerge-ediff)
+
+
+;; save with static file
+(global-set-key (kbd "C-c C-d") 'sync-target-file)
+
+
 (global-set-key (kbd "C-c x") 'pbcut)
 
 (global-set-key (kbd "C-x /") 'comment-region)
@@ -198,6 +266,9 @@
 (global-set-key (kbd "M-n") 'better-jumper-jump-forward)
 (global-set-key (kbd "<f8>") 'dap-hydra)
 (global-set-key (kbd "<f7>") 'treemacs)
+(global-set-key (kbd "<f9>") 'lsp-java-add-import)
+
+
 ;;(global-set-key (kbd "C-n") 'better-jumper-jump-forward)
 ;(bind-key* "C-i" 'better-jumper-jump-forward)
 ;;--------------- defun here --------------------------------------
@@ -252,6 +323,17 @@
   (pbcopy)
   (delete-region (region-beginning) (region-end)))
 
+;; -------- magit custom ----------
+
+(custom-set-faces
+ ;; other faces
+ '(magit-diff-added ((((type tty)) (:foreground "green"))))
+ '(magit-diff-added-highlight ((((type tty)) (:foreground "LimeGreen"))))
+ '(magit-diff-context-highlight ((((type tty)) (:foreground "default"))))
+ '(magit-diff-file-heading ((((type tty)) nil)))
+ '(magit-diff-removed ((((type tty)) (:foreground "red"))))
+ '(magit-diff-removed-highlight ((((type tty)) (:foreground "IndianRed"))))
+ '(magit-section-highlight ((((type tty)) nil))))
 ;; ---------------- here is config lsp-java-------------
 ;;
 ;; current VSCode defaults
@@ -271,11 +353,14 @@
 ;;                         "-XX:+UseStringDeduplication"
 ;;                         "-javaagent:/Users/luowen/.m2/repository/org/projectlombok/lombok/1.18.22/lombok-1.18.22.jar"
 ;;                         "-Xbootclasspath/a:/Users/luowen/.m2/repository/org/projectlombok/lombok/1.18.22/lombok-1.18.22.jar"))
-(setq lsp-java-vmargs '("-noverify"
-                        "-Xmx1G"
-                        "-XX:+UseG1GC"
-                        "-XX:+UseStringDeduplication"
-                        "-javaagent:/Users/luowen/.m2/repository/org/projectlombok/lombok/1.18.22/lombok-1.18.22.jar"))
+;; (setq lsp-java-vmargs '("-noverify"
+;;                         "-Xmx1G"
+;;                         "-XX:+UseG1GC"
+;;                         "-XX:+UseStringDeduplication"
+;;                         "-javaagent:/Users/luowen/.m2/repository/org/projectlombok/lombok/1.18.22/lombok-1.18.22.jar"))
+
+;; current VSCode defaults
+(setq lsp-java-vmargs '("-XX:+UseParallelGC" "-XX:GCTimeRatio=4" "-XX:AdaptiveSizePolicyWeight=90" "-Dsun.zip.disableMemoryMapping=true" "-Xmx2G" "-Xms100m" "-javaagent:/Users/luowen/.m2/repository/org/projectlombok/lombok/1.18.22/lombok-1.18.22.jar"))
 
 
 (use-package! projectile)
@@ -294,7 +379,6 @@
 (use-package! helm
   :config (helm-mode))
 (use-package! lsp-treemacs)
-
 
 ;(define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
 ;(define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
@@ -327,6 +411,71 @@
 (after! lsp-mode
   (advice-remove #'lsp #'+lsp-dont-prompt-to-install-servers-maybe-a))
 
+;; Here is comfigure cc of lsp-mode
+;; provider clang as backend server of lsp-mode
+(setq lsp-clients-clangd-args '("-j=3"
+                                "--background-index"
+                                "--clang-tidy"
+                                "--completion-style=detailed"
+                                "--header-insertion=never"
+                                "--header-insertion-decorators=0"))
+(after! lsp-clangd (set-lsp-priority! 'clangd 2))
+
+;; Here is provider ccls as lsp-server
+;; (after! ccls
+;;   (setq ccls-initialization-options '(:index (:comments 2) :completion (:detailedLabel t)))
+;;   (set-lsp-priority! 'ccls 2)) ; optional as ccls is the default in Doom
+
+(require 'dap-gdb-lldb)
+
+(setq package-selected-packages '(lsp-mode yasnippet lsp-treemacs helm-lsp
+    projectile hydra flycheck company avy which-key helm-xref dap-mode))
+
+(when (cl-find-if-not #'package-installed-p package-selected-packages)
+  (package-refresh-contents)
+  (mapc #'package-install package-selected-packages))
+
+;; sample `helm' configuration use https://github.com/emacs-helm/helm/ for details
+(helm-mode)
+(require 'helm-xref)
+(define-key global-map [remap find-file] #'helm-find-files)
+(define-key global-map [remap execute-extended-command] #'helm-M-x)
+(define-key global-map [remap switch-to-buffer] #'helm-mini)
+
+(which-key-mode)
+(add-hook 'c-mode-hook 'lsp)
+(add-hook 'c++-mode-hook 'lsp)
+
+(setq gc-cons-threshold (* 100 1024 1024)
+      read-process-output-max (* 1024 1024)
+      treemacs-space-between-root-nodes nil
+      company-idle-delay 0.0
+      company-minimum-prefix-length 1
+      lsp-idle-delay 0.1)  ;; clangd is fast
+
+(with-eval-after-load 'lsp-mode
+  (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
+  (require 'dap-cpptools)
+  (yas-global-mode))
+
+;; ---------------- c++ configure -------------
+(defun dap-debug-create-or-edit-json-template ()
+    "Edit the C++ debugging configuration or create + edit if none exists yet."
+    (interactive)
+    (let ((filename (concat (lsp-workspace-root) "/launch.json"))
+	  (default "~/.emacs.d/default-launch.json"))
+      (unless (file-exists-p filename)
+	(copy-file default filename))
+      (find-file-existing filename)))
+;; -------- Test template
+
+
+;;(setq dap-lldb-debug-program '("/usr/bin/lldb"))
+;; --------------- dap configure start
+;; Enabling only some features
+(setq dap-auto-configure-features '(sessions locals controls tooltip))
+;; --------------- dap configure end
+
 
 (dap-register-debug-template
   "irrigate-application"
@@ -351,34 +500,34 @@
 ;;         :projectName "irrigate-main"
 ;;         :port 1044))
 
-(dap-register-debug-template
-  "money-backend"
-  (list :type "java"
-        :request "compile_attach"
-        :args ""
-        :cwd nil
-        :host "localhost"
-        :request "launch"
-        :modulePaths []
-        :classPaths nil
-        :name "1"
-        :projectName ""
-        :mainClass "cn.lwcode.MyAppBackendApplication"))
+;; (dap-register-debug-template
+;;   "money-backend"
+;;   (list :type "java"
+;;         :request "compile_attach"
+;;         :args ""
+;;         :cwd nil
+;;         :host "localhost"
+;;         :request "launch"
+;;         :modulePaths []
+;;         :classPaths nil
+;;         :name "1"
+;;         :projectName ""
+;;         :mainClass "cn.lwcode.MyAppBackendApplication"))
 
 
-(dap-register-debug-template
-  "archives"
-  (list :type "java"
-        :request "compile_attach"
-        :args ""
-        :cwd nil
-        :host "localhost"
-        :request "launch"
-        :modulePaths []
-        :classPaths nil
-        :name "1"
-        :projectName ""
-        :mainClass "com.elitel.Main"))
+;; (dap-register-debug-template
+;;   "archives"
+;;   (list :type "java"
+;;         :request "compile_attach"
+;;         :args ""
+;;         :cwd nil
+;;         :host "localhost"
+;;         :request "launch"
+;;         :modulePaths []
+;;         :classPaths nil
+;;         :name "1"
+;;         :projectName ""
+;;         :mainClass "com.elitel.Main"))
 
 
 (dap-register-debug-template
@@ -395,6 +544,33 @@
         :projectName ""
         :mainClass "com.elitel.irr.wellelectric.MainApplication"))
 
+ ;; '(dap-debug-template-configurations
+ ;;   (quote
+ ;;    (("LLDB Run Configuration" :type "lldb" :cwd nil :request "launch" :program nil :name "LLDB::Run")
+ ;;     ("creswick Run Configuration"
+ ;;      :type "lldbe"
+ ;;      :cwd "/data/home/creswick/projectDir"
+ ;;      :request "launch"
+ ;;      :program "/data/home/creswick/projectDir/bin/eme_live"
+ ;;      :name "creswickProject")
+ ;;     )))
+(dap-register-debug-template
+"C++ LLDB dap"
+(list :type "lldb-vscode"
+        :cwd nil
+        :args nil
+        :request "launch"
+        :program nil))
+
+(setq dap-lldb-debug-program '("/Users/luowen/Desktop/lldb-vscode"))
+
+;; (dap-register-debug-template
+;;   "LLDB::Run-Custom"
+;;   (list :type "lldb"
+;;         :request "launch"
+;;         :name "LLDB::Run-Custom-name"
+;;         :program "/Users/luowen/workspace/code/c/redis/src/redis-server"
+;;         :cwd "/Users/luowen/workspace/code/c/redis"))
 
 
 ;; ((nil . ((eval . (let* ((root (cdr (project-current)))
@@ -539,7 +715,7 @@ public class %sService extends JpaRepositoryService<%s, %s> {
       return log;
     }
     @Override
-    protected JpaRepository<%s, %s> getMainRepository() {
+    public JpaRepository<%s, %s> getMainRepository() {
         return repository;
     }
 
@@ -568,10 +744,10 @@ public class %sService extends JpaRepositoryService<%s, %s> {
 import com.elitel.irr.foundation.framework.business.BaseServiceBusiness;
 import com.elitel.irr.foundation.framework.service.RepositoryService;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import ch.qos.logback.classic.Logger;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -588,7 +764,7 @@ public class %sBusiness extends BaseServiceBusiness<%s, %s> {
     }
 
     @Override
-    protected RepositoryService<%s, %s> getMainRepositoryService() {
+    public RepositoryService<%s, %s> getMainRepositoryService() {
         return mainService;
     }
 
@@ -619,11 +795,11 @@ public class %sBusiness extends BaseServiceBusiness<%s, %s> {
 import com.elitel.irr.foundation.framework.business.BaseServiceBusiness;
 import com.elitel.irr.foundation.framework.controller.BaseBusinessController;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ch.qos.logback.classic.Logger;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -636,7 +812,7 @@ public class %sController extends BaseBusinessController<%s, %s> {
     private %sBusiness mainBusiness;
 
     @Override
-    protected BaseServiceBusiness<%s, %s> getMainServiceBusiness() {
+    public BaseServiceBusiness<%s, %s> getMainServiceBusiness() {
         return mainBusiness;
     }
 
@@ -660,3 +836,44 @@ public class %sController extends BaseBusinessController<%s, %s> {
     (setq result (format template zero first second third fourth fifth sixth))
     (message result)
     (insert result)))
+
+
+;; select id, create_time, update_time, rtu_device_go_mission_state , rtu_device_go_mission_update_time from well_state ;
+(defun insert-sql-well-state ()
+  "Here is insert dao template"
+  (interactive )
+  (let ((template " select id, well_id, create_time, update_time, rtu_device_go_mission_state_key , rtu_device_go_mission_update_time from well_state;"))
+    (setq result (format template ))
+    (message result)
+    (insert result)))
+
+(defun show-file-name ()
+  "Show the full path file name in the minibuffer."
+  (interactive)
+  (message (buffer-file-name))
+  (kill-new (file-truename buffer-file-name))
+)
+
+(defun sync-target-file ()
+  "Sync target file Order to hot reload"
+  (interactive)
+  (message (buffer-file-name))
+  (let ((current-file-absolute-path (buffer-file-name))
+        target-file-absolute-path)
+    (setq target-file-absolute-path (replace-regexp-in-string "/src/main/resources" "/target/classes" current-file-absolute-path))
+    (f-write-text (buffer-string) 'utf-8 target-file-absolute-path)
+    (message (concat "sync to target file: " target-file-absolute-path))
+    (save-buffer)))
+
+;;from https://stackoverflow.com/questions/10627289/emacs-internal-process-killing-any-command
+(define-key process-menu-mode-map (kbd "C-k") 'joaot/delete-process-at-point)
+
+(defun joaot/delete-process-at-point ()
+  (interactive)
+  (let ((process (get-text-property (point) 'tabulated-list-id)))
+    (cond ((and process
+                (processp process))
+           (delete-process process)
+           (revert-buffer))
+          (t
+           (error "no process at point!")))))
