@@ -860,10 +860,12 @@ public class %sController extends BaseBusinessController<%s, %s> {
   (message (buffer-file-name))
   (let ((current-file-absolute-path (buffer-file-name))
         target-file-absolute-path)
-    (setq target-file-absolute-path (replace-regexp-in-string "/src/main/resources" "/target/classes" current-file-absolute-path))
+    (setq target-file-absolute-path
+          (if (string-match-p (regexp-quote "/src/main/resources") current-file-absolute-path)
+              (replace-in-string "/src/main/resources" "/target/classes" current-file-absolute-path)
+            (replace-in-string "/src/main/java" "/target/classes" current-file-absolute-path)))
     (f-write-text (buffer-string) 'utf-8 target-file-absolute-path)
-    (message (concat "sync to target file: " target-file-absolute-path))
-    (save-buffer)))
+    (message (concat "sync to target file: " target-file-absolute-path))))
 
 ;;from https://stackoverflow.com/questions/10627289/emacs-internal-process-killing-any-command
 (define-key process-menu-mode-map (kbd "C-k") 'joaot/delete-process-at-point)
@@ -877,3 +879,6 @@ public class %sController extends BaseBusinessController<%s, %s> {
            (revert-buffer))
           (t
            (error "no process at point!")))))
+
+(defun replace-in-string (what with in)
+  (replace-regexp-in-string (regexp-quote what) with in nil 'literal))
